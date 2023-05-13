@@ -1,0 +1,8 @@
+flask
+ipython
+black
+sqlalchemy
+flask-sqlalchemy
+flask-login
+flask-migrate
+
