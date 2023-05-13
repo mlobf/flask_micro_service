@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, make_response
 from models import db, User
-from flask_login import login_user
+from flask_login import login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 user_blueprint = Blueprint("user_api_routes", __name__, url_prefix="/api/user")
@@ -58,3 +58,38 @@ def login():
 
     response = {"message": "Access Denied"}
     return make_response(jsonify(response, 401))
+
+
+@user_blueprint.route("/logout", methods=["POST"])
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+        response = {"message": "User logout"}
+        return make_response(jsonify(response, 200))
+
+    response = {"message": " No User logged in."}
+    return make_response(jsonify(response, 401))
+
+
+@user_blueprint.route("/<username>/exists", methods=["GET"])
+def user_exists(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        response = {"result": True}
+        return make_response(jsonify(response, 200))
+
+    response = {"result": True}
+    return make_response(jsonify(response, 404))
+
+
+@user_blueprint.route("/", methods=["GET"])
+def get_current_user():
+    import pdb
+
+    pdb.set_trace()
+    if current_user.is_authenticated:
+        response = {"result": current_user.serializer()}
+        return make_response(jsonify(response, 200))
+    else:
+        response = {"message": "User not logged in"}
+        return make_response(jsonify(response, 404))
