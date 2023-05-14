@@ -3,8 +3,8 @@ from flask.sessions import SecureCookieSessionInterface
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
-import models
-from routes import user_blueprint
+#import models
+from routes import book_blueprint
 import os
 
 app = Flask(__name__)
@@ -15,11 +15,12 @@ app.config["SECRET_KEY"] = "72AdaMylh5du3Q-q3Rvixw"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + file_path
 
-models.init_app(app)
-app.register_blueprint(user_blueprint)
-login_manager = LoginManager(app)
-migrate = Migrate(app, models.db)
+#models.init_app(app)
+app.register_blueprint(book_blueprint)
+#login_manager = LoginManager(app)
+#migrate = Migrate(app, models.db)
 
+'''
 @login_manager.user_loader
 def load_user(user_id):
     return models.User.query.filter_by(id=user_id).first()
@@ -36,7 +37,6 @@ def load_user_from_request(request):
 
     return None
 
-
 class CustomSessionInterface(SecureCookieSessionInterface):
     """Prevent creating session from API requests."""
 
@@ -44,8 +44,8 @@ class CustomSessionInterface(SecureCookieSessionInterface):
         if g.get('login_via_header'):
             return
         return super(CustomSessionInterface, self).save_session(*args, **kwargs)
-
+'''
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)
