@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
-import os
+from api.user_api import *
+import os   
 
 file_path = os.path.abspath(os.getcwd()) + "/database/user.db"
 
@@ -23,8 +24,6 @@ bootstrap = Bootstrap(app)
 @login_manager.user_loader
 def load_user(user_id):
     return None
-
-
 
 
 
